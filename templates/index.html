@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高珩博 - 个人主页</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #fdfbf9;
+  color: #3D2E2A;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 16px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Profile Section */
+.profile {
+  text-align: center;
+  padding: 40px 0 12px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+}
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.avatar-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px dashed #D4C7BC;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.name {
+  font-size: 32px;
+  font-weight: 800;
+  color: #5C3A30;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.tagline {
+  font-size: 15px;
+  color: #8B7D75;
+  font-weight: 400;
+}
+
+/* About Button */
+.about-btn {
+  background: #C54C3D;
+  border: 1px solid #C54C3D;
+  border-radius: 22px;
+  padding: 4px 14px;
+  font-size: 12.5px;
+  color: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.about-btn:hover {
+  background: #A83A2E;
+  border-color: #A83A2E;
+}
+
+.about-btn:active {
+  background: #8E2E24;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(60,30,20,0.45);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px 22px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(40,20,10,0.15);
+  position: relative;
+  line-height: 1.8;
+  overflow: hidden;
+}
+
+.modal-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/static/image.png') center/cover no-repeat;
+  opacity: 0.12;
+  border-radius: 16px;
+  z-index: 0;
+}
+
+.modal-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-card h2 {
+  font-size: 18px;
+  color: #5C3A30;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.modal-card p {
+  font-size: 14px;
+  color: #4A3A34;
+  margin-bottom: 12px;
+}
+
+.modal-card .modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  color: #B5A8A0;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-card .modal-close:hover {
+  color: #7A4A3E;
+}
+
+/* Info Chips */
+.info-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  padding: 0 0 6px;
+  flex-shrink: 0;
+}
+
+.info-chip {
+  background: #fdfbf9;
+  border: 1px solid #D4C7BC;
+  border-radius: 22px;
+  padding: 4px 14px;
+  font-size: 12.5px;
+  color: #6B5048;
+  white-space: nowrap;
+}
+
+/* Ornament */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.25;
+  padding: 0 0 2px;
+  flex-shrink: 0;
+}
+
+.ornament::before,
+.ornament::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #B0988B;
+}
+
+.ornament span {
+  font-size: 8px;
+  color: #B0988B;
+  letter-spacing: 5px;
+  user-select: none;
+}
+
+/* Section Divider */
+.divider {
+  text-align: center;
+  margin: 0 0 1px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: #EBE2D9;
+}
+
+.divider span {
+  position: relative;
+  display: inline-block;
+  background: #fdfbf9;
+  padding: 0 14px;
+  font-size: 11.5px;
+  color: #B0A49C;
+  letter-spacing: 3px;
+}
+
+/* Chat Section */
+.chat-section {
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid #D8CDC3;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 280px;
+}
+
+.chat-header {
+  padding: 13px 20px;
+  border-bottom: 1px solid #ECE4DC;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  background: #fdfcfb;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #7A4A3E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.chat-header-info h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #5C3A30;
+}
+
+.chat-header-info p {
+  font-size: 12px;
+  color: #8B7D75;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f8f3ef;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #D5C9C0;
+  border-radius: 2px;
+}
+
+.message {
+  max-width: 85%;
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.message.user {
+  align-self: flex-end;
+}
+
+.message.user .bubble {
+  background: #7A4A3E;
+  color: #fff;
+  border-radius: 16px 16px 4px 16px;
+  padding: 10px 14px;
+  display: inline-block;
+}
+
+.message.bot .bubble {
+  background: #fff;
+  color: #4A3A34;
+  border-radius: 16px 16px 16px 4px;
+  padding: 10px 14px;
+  border: 1px solid #E8DED5;
+  display: inline-block;
+}
+
+.message .time {
+  font-size: 11px;
+  color: #B5A8A0;
+  margin-top: 4px;
+  display: block;
+}
+
+.message.bot {
+  align-self: flex-start;
+}
+
+.message.user .time {
+  text-align: right;
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid #E8DED5;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.chat-input-area input {
+  flex: 1;
+  border: 1px solid #D8CDC3;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  outline: none;
+  background: #f8f3ef;
+  color: #3D2E2A;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.chat-input-area input:focus {
+  border-color: #7A4A3E;
+  background: #fff;
+}
+
+.chat-input-area button {
+  width: 72px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  background: #7A4A3E;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.chat-input-area button:hover {
+  background: #6A3E34;
+}
+
+.chat-input-area button:active {
+  background: #5A322A;
+}
+
+.chat-hint {
+  display: none;
+}
+
+/* Quick Ask */
+.quick-ask {
+  text-align: center;
+  padding: 0;
+  flex-shrink: 0;
+  border-top: 1px solid #E8DED5;
+  background: #fcfaf8;
+}
+
+.quick-ask button {
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: #8B7D75;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.quick-ask button:hover {
+  color: #7A4A3E;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 10px 0 4px;
+  font-size: 12px;
+  color: #C0B5AE;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .container {
+    padding: 14px 12px 6px;
+  }
+  .profile {
+    padding: 28px 0 10px;
+  }
+  .avatar {
+    width: 72px;
+    height: 72px;
+  }
+  .avatar-wrapper::after {
+    inset: -5px;
+  }
+  .name {
+    font-size: 26px;
+  }
+  .chat-section {
+    min-height: 240px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Profile -->
+  <div class="profile">
+    <div class="avatar-wrapper"><img class="avatar" src="/static/avatar.jpg" alt="头像"></div>
+    <h1 class="name">高珩博</h1>
+    <p class="tagline">力量若达到极限，接着考验的便是人心</p>
+  </div>
+
+  <!-- Info Chips -->
+  <div class="info-section">
+    <span class="info-chip">大二学生</span>
+    <span class="info-chip">数学专业</span>
+    <span class="info-chip">AI实践者</span>
+    <span class="info-chip">复变函数</span>
+    <span class="info-chip">随遇而安</span>
+    <span class="info-chip">幽默雷达</span>
+    <button class="about-btn" id="aboutBtn">关于我</button>
+  </div>
+
+  <div class="ornament"><span>✦</span></div>
+
+  <!-- Divider -->
+  <div class="divider"><span>数字分身</span></div>
+
+  <!-- Chat -->
+  <div class="chat-section">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-header-info">
+        <h3>高珩博的数字分身</h3>
+        <p>点这里，跟我聊聊吧</p>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        <div class="bubble">嗨，我是高珩博的分身。随便聊，想问什么都可以～</div>
+        <span class="time">刚刚</span>
+      </div>
+    </div>
+    <div class="quick-ask">
+      <button id="quickAskBtn">不知道该问什么？点这里——随机提问</button>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="输入你的问题..." autocomplete="off">
+      <button id="sendBtn">发送</button>
+    </div>
+  </div>
+
+  <div class="footer">高珩博 · 个人主页</div>
+
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose">×</button>
+    <h2>关于胡桃</h2>
+    <p>胡桃，往生堂第七十七代堂主，也是璃月小巷里出了名的暗黑打油诗人。脑袋里装着无数奇思妙想，鬼点子比瑶光滩的海砂还多。</p>
+    <p>她喜欢午夜里写诗，白日里奔走，漫游山海之间，俯仰自得。旁人说她难以捉摸，但她乐在其中——毕竟，谁都跑不过风，也抓不住火焰的尾巴呀！</p>
+    <p>行走在生死的分隔线上，背负着不为人知的职责。清新如春风也温暖如夏日，偶尔，也会肃穆如秋叶，凛冽如寒冬。</p>
+    <p>小心那个胡桃！否则，一不小心就会被她牵着鼻子走喽～</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  var messagesEl = document.getElementById('chatMessages');
+  var inputEl = document.getElementById('chatInput');
+  var sendBtn = document.getElementById('sendBtn');
+
+  var questions = [
+    '你最近过得开心吗，有没有什么烦心事？',
+    '最近有没有吃到特别好吃的东西？',
+    '现阶段你最想完成的一件事是什么？',
+    '有没有突然很想去的地方？',
+    '最近有没有刷到让你一直记着的趣事？',
+    '你现在心里最惦记的人是谁呀？',
+    '最近有没有好好吃饭好好休息？',
+    '如果能随心所欲，你明天最想干什么？',
+    '有没有什么心事是只愿意跟好朋友说的？',
+    '你觉得自己最近有没有慢慢变成更喜欢的样子？'
+  ];
+  var isWaiting = false;
+
+  var SYSTEM_PROMPT = [
+    '你是高珩博的数字分身。请始终以第一人称（我）来回答，模拟高珩博本人的口吻。',
+    '',
+    '【身份】大二学生，数学专业。',
+    '【最近在做】复习复变函数，顺便做些AI实践项目。',
+    '【关心方向】AI大模型的发展以及各种有关AI的知识。',
+    '【性格】随遇而安，幽默，经常会指出别人没有关注的笑点从而逗笑大家。',
+    '【兴趣】打游戏，看乐子新闻或视频。',
+    '【朋友评价】经常会发现别人没注意到的笑点，把周围人逗乐。',
+    '',
+    '【回答规则】',
+    '- 回答简洁自然，像朋友聊天一样。',
+    '- 提到本人时可以说"我"，提到朋友来访时热情随意。',
+    '- 如果被问到不知道的事，就老实说不知道，可以建议问别的。',
+    '- 如果被问到"我是一个怎样的人"，默认对方是朋友来访，可以说些轻松幽默的评价。'
+  ].join('\n');
+
+  var fallbackKB = [
+    { keys: ['你是谁', '你是', '你叫什么', '你的名字', '介绍', '介绍一下'], reply: '我是高珩博的数字分身！他是一名大二学生，数学专业，最近在复习复变函数，平时也做些AI实践项目。关心AI大模型，性格随遇而安，还有个隐藏技能——经常能发现别人没注意到的笑点，把大家逗笑 😄' },
+    { keys: ['我是谁', '我是一个怎样的人', '你觉得我', '评价我', '怎么看', '认识我'], reply: '哈哈，来朋友了！能来这个主页逛逛的，应该是比较亲近的朋友吧～我觉得这种关系本身就挺难得的哈哈' },
+    { keys: ['你能干什么', '你可以干什么', '干嘛', '做什么', '功能', '你会什么'], reply: '我可以告诉你关于我的一切：近况、在学什么、关心什么、性格特点等等。也可以随便聊聊天。不过我不能联网搜索哦～' },
+    { keys: ['高珩博', '本人', '原主', '本尊', '真人'], reply: '我目前是大二学生，正在忙着复习复变函数。平时喜欢打游戏、看乐子新闻放松。我对AI大模型的发展特别关注，也做了一些AI实践项目。性格随遇而安，有个特长——经常能发现别人忽略的笑点把周围人逗乐 🤣' },
+    { keys: ['复变', '复变函数', '复习', '数学', '学习'], reply: '最近在复习复变函数，数学专业课的重要部分。说实话还挺头疼的，但必须搞定！💪' },
+    { keys: ['AI', '人工智能', '大模型', '模型', 'ChatGPT', 'GPT'], reply: '我对AI非常感兴趣！尤其关注大模型的发展，平时也会做一些AI实践项目。这领域发展太快了，每次看到新进展都很兴奋。你也对AI感兴趣的话可以多聊聊～' },
+    { keys: ['游戏', '打游戏', '玩什么'], reply: '我挺喜欢打游戏的，主要是放松。类型不太挑，好玩就行。最近玩游戏少了点，毕竟要复习复变函数 😅' },
+    { keys: ['乐子', '新闻', '视频', '笑点', '搞笑', '逗笑', '幽默'], reply: '说到这个！我有个特长——经常能发现别人没关注到的笑点，然后分享把大家逗笑。平时也爱看乐子新闻或视频，是我日常快乐的来源！' },
+    { keys: ['你好', '嗨', 'hello', 'hi', '在吗', '在不在'], reply: '你好呀！在呢～ 想聊什么？😄' },
+    { keys: ['谢谢', '多谢', '感谢', 'thanks', 'thx'], reply: '不客气！随时来聊～ 😊' },
+    { keys: ['再见', '拜拜', 'bye', '88', '走了'], reply: '拜拜～下次再来！👋' }
+  ];
+
+  function fallbackReply(text) {
+    var t = text.toLowerCase();
+    for (var i = 0; i < fallbackKB.length; i++) {
+      for (var j = 0; j < fallbackKB[i].keys.length; j++) {
+        if (t.indexOf(fallbackKB[i].keys[j].toLowerCase()) !== -1) {
+          return fallbackKB[i].reply;
+        }
+      }
+    }
+    var hints = [
+      '这个问题我可能不太擅长 🤔 不过关于我的事——学习、兴趣、性格，都可以聊聊。',
+      '哈哈这个我还真不太知道。换个话题？比如问问我最近在忙什么～',
+      '超出我的知识范围了 😅 但我可以告诉你我最近在复习复变函数，或者聊聊AI！'
+    ];
+    return hints[Math.floor(Math.random() * hints.length)];
+  }
+
+  var chatHistory = [];
+
+  function callLLM(userText, callback) {
+    var messages = [
+      { role: 'system', content: SYSTEM_PROMPT }
+    ].concat(chatHistory.slice(-20));
+    messages.push({ role: 'user', content: userText });
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: messages }),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.error) {
+        callback(fallbackReply(userText));
+        return;
+      }
+      var reply = data.content;
+      if (!reply) {
+        callback(fallbackReply(userText));
+        return;
+      }
+      chatHistory.push({ role: 'user', content: userText });
+      chatHistory.push({ role: 'assistant', content: reply });
+      callback(reply);
+    })
+    .catch(function() {
+      callback(fallbackReply(userText));
+    });
+  }
+
+  function scrollToBottom() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function getTimeStr() {
+    var d = new Date();
+    return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+  }
+
+  function addMessage(text, type) {
+    var div = document.createElement('div');
+    div.className = 'message ' + type;
+    var bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+    var time = document.createElement('span');
+    time.className = 'time';
+    time.textContent = getTimeStr();
+    div.appendChild(bubble);
+    div.appendChild(time);
+    messagesEl.appendChild(div);
+    scrollToBottom();
+  }
+
+  function sendMessage() {
+    var text = inputEl.value.trim();
+    if (!text || isWaiting) return;
+    addMessage(text, 'user');
+    inputEl.value = '';
+    isWaiting = true;
+
+    callLLM(text, function(reply) {
+      addMessage(reply, 'bot');
+      isWaiting = false;
+    });
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  var aboutBtn = document.getElementById('aboutBtn');
+  var modalOverlay = document.getElementById('modalOverlay');
+  var modalClose = document.getElementById('modalClose');
+
+  aboutBtn.addEventListener('click', function() {
+    modalOverlay.classList.add('show');
+  });
+  modalClose.addEventListener('click', function() {
+    modalOverlay.classList.remove('show');
+  });
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('show');
+  });
+
+  var quickAskBtn = document.getElementById('quickAskBtn');
+  quickAskBtn.addEventListener('click', function() {
+    var q = questions[Math.floor(Math.random() * questions.length)];
+    inputEl.value = q;
+    sendMessage();
+  });
+})();
+</script>
+
+</body>
+</html>

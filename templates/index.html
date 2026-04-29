@@ -8,34 +8,45 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
 }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   background: #fdfbf9;
   color: #3D2E2A;
   line-height: 1.7;
-  display: flex;
-  flex-direction: column;
 }
 
 .container {
-  max-width: 640px;
-  width: 100%;
+  width: 92%;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 20px 16px 8px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  padding: 20px 0 24px;
+}
+
+/* Layout */
+.main-layout {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 56px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.main-left {
+  min-width: 0;
+}
+
+.main-right {
+  position: sticky;
+  top: 20px;
+  min-width: 0;
 }
 
 /* Profile Section */
 .profile {
   text-align: center;
-  padding: 40px 0 12px;
-  flex-shrink: 0;
+  padding: 36px 0 16px;
 }
 
 .avatar {
@@ -178,7 +189,6 @@ body {
   gap: 6px;
   justify-content: center;
   padding: 0 0 6px;
-  flex-shrink: 0;
 }
 
 .info-chip {
@@ -189,6 +199,60 @@ body {
   font-size: 12.5px;
   color: #6B5048;
   white-space: nowrap;
+}
+
+/* Portfolio */
+.portfolio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 4px 0 18px;
+}
+
+.portfolio-card {
+  background: #fff;
+  border: 1px solid #E8E0D7;
+  border-radius: 10px;
+  padding: 16px 10px;
+  text-align: center;
+}
+
+.portfolio-card .p-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #5C3A30;
+  margin-bottom: 3px;
+}
+
+.portfolio-card .p-desc {
+  font-size: 11.5px;
+  color: #9B8A82;
+  line-height: 1.5;
+}
+
+/* Contact */
+.contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 4px 0 24px;
+  font-size: 13px;
+  color: #8B7D75;
+}
+
+.contact .c-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.contact .c-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #C54C3D;
+  flex-shrink: 0;
 }
 
 /* Ornament */
@@ -221,7 +285,6 @@ body {
   text-align: center;
   margin: 0 0 1px;
   position: relative;
-  flex-shrink: 0;
 }
 
 .divider::before {
@@ -251,9 +314,10 @@ body {
   border: 1.5px solid #D8CDC3;
   display: flex;
   flex-direction: column;
-  flex: 1;
   overflow: hidden;
-  min-height: 280px;
+  height: calc(100vh - 48px);
+  max-height: 900px;
+  min-height: 460px;
 }
 
 .chat-header {
@@ -262,7 +326,6 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-shrink: 0;
   background: #fdfcfb;
 }
 
@@ -276,7 +339,6 @@ body {
   justify-content: center;
   font-size: 18px;
   color: #fff;
-  flex-shrink: 0;
 }
 
 .chat-header-info h3 {
@@ -409,7 +471,6 @@ body {
 .quick-ask {
   text-align: center;
   padding: 0;
-  flex-shrink: 0;
   border-top: 1px solid #E8DED5;
   background: #fcfaf8;
 }
@@ -439,9 +500,22 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 750px) {
   .container {
-    padding: 14px 12px 6px;
+    width: 100%;
+    padding: 14px 16px 24px;
+  }
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .main-right {
+    position: static;
+  }
+  .chat-section {
+    height: auto;
+    min-height: 380px;
+    max-height: 500px;
   }
   .profile {
     padding: 28px 0 10px;
@@ -456,8 +530,12 @@ body {
   .name {
     font-size: 26px;
   }
-  .chat-section {
-    min-height: 240px;
+  .portfolio {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .portfolio-card {
+    padding: 10px 8px;
   }
 }
 </style>
@@ -466,51 +544,82 @@ body {
 
 <div class="container">
 
-  <!-- Profile -->
-  <div class="profile">
-    <div class="avatar-wrapper"><img class="avatar" src="/static/avatar.jpg" alt="头像"></div>
-    <h1 class="name">高珩博</h1>
-    <p class="tagline">力量若达到极限，接着考验的便是人心</p>
-  </div>
+  <div class="main-layout">
 
-  <!-- Info Chips -->
-  <div class="info-section">
-    <span class="info-chip">大二学生</span>
-    <span class="info-chip">数学专业</span>
-    <span class="info-chip">AI实践者</span>
-    <span class="info-chip">复变函数</span>
-    <span class="info-chip">随遇而安</span>
-    <span class="info-chip">幽默雷达</span>
-    <button class="about-btn" id="aboutBtn">关于我</button>
-  </div>
+    <!-- 左侧：个人信息 -->
+    <div class="main-left">
 
-  <div class="ornament"><span>✦</span></div>
-
-  <!-- Divider -->
-  <div class="divider"><span>数字分身</span></div>
-
-  <!-- Chat -->
-  <div class="chat-section">
-    <div class="chat-header">
-      <div class="chat-avatar">🤖</div>
-      <div class="chat-header-info">
-        <h3>高珩博的数字分身</h3>
-        <p>点这里，跟我聊聊吧</p>
+      <!-- Profile -->
+      <div class="profile">
+        <div class="avatar-wrapper"><img class="avatar" src="/static/avatar.jpg" alt="头像"></div>
+        <h1 class="name">高珩博</h1>
+        <p class="tagline">力量若达到极限，接着考验的便是人心</p>
       </div>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="message bot">
-        <div class="bubble">嗨，我是高珩博的分身。随便聊，想问什么都可以～</div>
-        <span class="time">刚刚</span>
+
+      <!-- Info Chips -->
+      <div class="info-section">
+        <span class="info-chip">大二学生</span>
+        <span class="info-chip">数学专业</span>
+        <span class="info-chip">AI实践者</span>
+        <span class="info-chip">复变函数</span>
+        <span class="info-chip">随遇而安</span>
+        <span class="info-chip">幽默雷达</span>
+        <button class="about-btn" id="aboutBtn">关于我</button>
       </div>
+
+      <!-- Portfolio -->
+      <div class="portfolio">
+        <div class="portfolio-card">
+          <div class="p-name">AI 实践项目</div>
+          <div class="p-desc">在学习中动手做的 AI 小工具和实验</div>
+        </div>
+        <div class="portfolio-card">
+          <div class="p-name">个人主页</div>
+          <div class="p-desc">你现在看到的这个页面</div>
+        </div>
+        <div class="portfolio-card">
+          <div class="p-name">数学笔记</div>
+          <div class="p-desc">复变函数等专业课的学习整理</div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="contact">
+        <div class="c-item"><span class="c-icon"></span> 邮箱：15649959290@163.com</div>
+        <div class="c-item"><span class="c-icon"></span> 微信：Heng15649959290</div>
+      </div>
+
+      <div class="divider"><span>数字分身</span></div>
+
     </div>
-    <div class="quick-ask">
-      <button id="quickAskBtn">不知道该问什么？点这里——随机提问</button>
+
+    <!-- 右侧：聊天 -->
+    <div class="main-right">
+
+      <div class="chat-section">
+        <div class="chat-header">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-header-info">
+            <h3>高珩博的数字分身</h3>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot">
+            <div class="bubble">嗨，我是高珩博的分身。随便聊，想问什么都可以～</div>
+            <span class="time">刚刚</span>
+          </div>
+        </div>
+        <div class="quick-ask">
+          <button id="quickAskBtn">不知道该问什么？点这里——随机提问</button>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="chatInput" placeholder="输入你的问题..." autocomplete="off">
+          <button id="sendBtn">发送</button>
+        </div>
+      </div>
+
     </div>
-    <div class="chat-input-area">
-      <input type="text" id="chatInput" placeholder="输入你的问题..." autocomplete="off">
-      <button id="sendBtn">发送</button>
-    </div>
+
   </div>
 
   <div class="footer">高珩博 · 个人主页</div>

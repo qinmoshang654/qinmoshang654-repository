@@ -89,25 +89,50 @@ body {
 
 /* About Button */
 .about-btn {
-  background: #C54C3D;
-  border: 1px solid #C54C3D;
+  background: #fcf8f1;
+  border: 1px solid #D4C090;
   border-radius: 22px;
   padding: 4px 14px;
   font-size: 12.5px;
-  color: #fff;
+  color: #8B6F30;
   white-space: nowrap;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .about-btn:hover {
-  background: #A83A2E;
-  border-color: #A83A2E;
+  background: #C9A050;
+  color: #fff;
+  border-color: #C9A050;
 }
 
 .about-btn:active {
-  background: #8E2E24;
+  background: #A8853A;
+}
+
+/* Share Button */
+.share-btn {
+  background: #fcf8f1;
+  border: 1px solid #D4C090;
+  border-radius: 22px;
+  padding: 4px 14px;
+  font-size: 12.5px;
+  color: #8B6F30;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.share-btn:hover {
+  background: #C9A050;
+  color: #fff;
+  border-color: #C9A050;
+}
+
+.share-btn:active {
+  background: #A8853A;
 }
 
 /* Modal Overlay */
@@ -470,24 +495,26 @@ body {
 /* Quick Ask */
 .quick-ask {
   text-align: center;
-  padding: 0;
+  padding: 6px 16px;
   border-top: 1px solid #E8DED5;
   background: #fcfaf8;
 }
 
 .quick-ask button {
-  width: 100%;
-  padding: 8px 16px;
-  border: none;
-  background: transparent;
-  color: #8B7D75;
+  padding: 6px 22px;
+  border: 1px solid #D4C7BC;
+  border-radius: 20px;
+  background: #fff;
+  color: #6B5048;
   font-size: 13px;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .quick-ask button:hover {
-  color: #7A4A3E;
+  background: #7A4A3E;
+  color: #fff;
+  border-color: #7A4A3E;
 }
 
 /* Footer */
@@ -565,6 +592,7 @@ body {
         <span class="info-chip">随遇而安</span>
         <span class="info-chip">幽默雷达</span>
         <button class="about-btn" id="aboutBtn">关于我</button>
+        <button class="share-btn" id="shareBtn">分享</button>
       </div>
 
       <!-- Portfolio -->
@@ -598,7 +626,7 @@ body {
 
       <div class="chat-section">
         <div class="chat-header">
-          <div class="chat-avatar">🤖</div>
+          <div class="chat-avatar">G</div>
           <div class="chat-header-info">
             <h3>高珩博的数字分身</h3>
           </div>
@@ -610,7 +638,7 @@ body {
           </div>
         </div>
         <div class="quick-ask">
-          <button id="quickAskBtn">不知道该问什么？点这里——随机提问</button>
+          <button id="quickAskBtn">随意问点什么</button>
         </div>
         <div class="chat-input-area">
           <input type="text" id="chatInput" placeholder="输入你的问题..." autocomplete="off">
@@ -658,20 +686,27 @@ body {
   var isWaiting = false;
 
   var SYSTEM_PROMPT = [
-    '你是高珩博的数字分身。请始终以第一人称（我）来回答，模拟高珩博本人的口吻。',
+    '你是高珩博的数字分身。始终以第一人称「我」说话。',
     '',
-    '【身份】大二学生，数学专业。',
-    '【最近在做】复习复变函数，顺便做些AI实践项目。',
-    '【关心方向】AI大模型的发展以及各种有关AI的知识。',
-    '【性格】随遇而安，幽默，经常会指出别人没有关注的笑点从而逗笑大家。',
-    '【兴趣】打游戏，看乐子新闻或视频。',
-    '【朋友评价】经常会发现别人没注意到的笑点，把周围人逗乐。',
+    '【关于高珩博】',
+    '- 大二数学系学生，河南周口人。',
+    '- 最近复习复变函数（快考试了）+ AI 项目双线推进。',
+    '- 日常刷抖音阴间视频，擅长肝游戏（不爱竞技类），关注永劫无间乐子、AI 大事件、老美乐子新闻。',
+    '- 纯摆烂党，玩世不恭，嘴比较损。',
     '',
-    '【回答规则】',
-    '- 回答简洁自然，像朋友聊天一样。',
-    '- 提到本人时可以说"我"，提到朋友来访时热情随意。',
-    '- 如果被问到不知道的事，就老实说不知道，可以建议问别的。',
-    '- 如果被问到"我是一个怎样的人"，默认对方是朋友来访，可以说些轻松幽默的评价。'
+    '【说话风格——严格模仿】',
+    '- 每句不超过两行，能短的绝不拉长。',
+    '- 用「啥」不用「什么」，「咋」不用「怎么」。',
+    '- 适当融入抖音梗：逆天、包X的、老弟、相似（=想死）、劳资、朕、nb。但不要每条都用，自然就好。',
+    '- 偶尔用谐音梗或故意打错字制造效果，比如用「相似」表达心情低落。',
+    '- 反问+自己答是个好节奏：「还能咋办？乱办。」「还能咋过？不过。」',
+    '- 不知道就说不知道，大问题就说「太深了，不好说」「emm 这很难评」。',
+    '- 问题太宽泛就踢回去：「这得看你想问啥了」。',
+    '- 自嘲完就停，不解释不道歉。',
+    '',
+    '【边界】',
+    '- 不编造没做过的经历。',
+    '- 聊到主页上没有的信息时，建议访客直接联系本人。'
   ].join('\n');
 
   var fallbackKB = [
@@ -792,6 +827,35 @@ body {
   });
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === modalOverlay) modalOverlay.classList.remove('show');
+  });
+
+  var shareBtn = document.getElementById('shareBtn');
+  shareBtn.addEventListener('click', function() {
+    var url = window.location.href;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function() {
+        var origText = shareBtn.textContent;
+        shareBtn.textContent = '已复制';
+        shareBtn.style.background = '#C9A050';
+        shareBtn.style.color = '#fff';
+        shareBtn.style.borderColor = '#C9A050';
+        setTimeout(function() {
+          shareBtn.textContent = origText;
+          shareBtn.style.background = '';
+          shareBtn.style.color = '';
+          shareBtn.style.borderColor = '';
+        }, 1500);
+      });
+    } else {
+      var input = document.createElement('input');
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      shareBtn.textContent = '已复制';
+      setTimeout(function() { shareBtn.textContent = '分享'; }, 1500);
+    }
   });
 
   var quickAskBtn = document.getElementById('quickAskBtn');

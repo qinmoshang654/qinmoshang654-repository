@@ -1,10 +1,17 @@
 from flask import Flask, render_template, request, jsonify, Response
 import requests
-import json
+import os
+
+# 本地开发时自动加载 .env 文件
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 app = Flask(__name__)
 
-DEEPSEEK_API_KEY = "sk-76c6a5b939a448e191d1621949f658f2"
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 DEEPSEEK_ENDPOINT = "https://api.deepseek.com/v1/chat/completions"
 DEEPSEEK_MODEL = "deepseek-chat"
 
@@ -23,7 +30,7 @@ def chat():
         "model": DEEPSEEK_MODEL,
         "messages": messages,
         "temperature": 0.8,
-        "max_tokens": 600,
+        "max_tokens": 200,
     }
 
     try:

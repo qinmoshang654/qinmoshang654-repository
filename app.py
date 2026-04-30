@@ -96,14 +96,14 @@ def admin_logs():
 
     html = """<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
     <style>
-      body { font-family: sans-serif; background: #fdfbf9; padding: 20px; color: #333; }
-      .log { background: #fff; border: 1px solid #e8e0d7; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
-      .time { font-size: 12px; color: #999; margin-bottom: 6px; }
-      .q { color: #2b4a6e; font-weight: 600; margin-bottom: 4px; }
-      .a { color: #555; }
+      body {{ font-family: sans-serif; background: #fdfbf9; padding: 20px; color: #333; }}
+      .log {{ background: #fff; border: 1px solid #e8e0d7; border-radius: 10px; padding: 14px; margin-bottom: 10px; }}
+      .time {{ font-size: 12px; color: #999; margin-bottom: 6px; }}
+      .q {{ color: #2b4a6e; font-weight: 600; margin-bottom: 4px; }}
+      .a {{ color: #555; }}
     </style>
-    <h2>聊天记录（最近 {} 条）</h2>
-    """.format(len(logs))
+    <h2>聊天记录（最近 {count} 条）</h2>
+    """.format(count=len(logs))
 
     for entry in logs:
         html += '<div class="log"><div class="time">{}</div><div class="q">Q: {}</div><div class="a">A: {}</div></div>'.format(
